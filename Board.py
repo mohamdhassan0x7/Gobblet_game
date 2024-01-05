@@ -91,7 +91,7 @@ class Board:
         else:
             self.turn = "l"
             
-    	def draw_squares(self, win):
+    def draw_squares(self, win):
         win.fill(BLACK)
         for row in range(ROWS):
             for col in range(row % 2, COLS, 2):
@@ -99,15 +99,14 @@ class Board:
             for col in range((row+1) % 2, COLS, 2):
                 pygame.draw.rect(win, WHITE, ((row+1)*SQUARE_SIZE, col *SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
-
-	def print_board(self,win):
+    def print_board(self, win):
         self.draw_squares(win)
-        for row in range (4):
-            for col in range (4):
-                if self.board[row][col] != None:
+        for row in range(4):
+            for col in range(4):
+                if self.board[row][col] is not None:
                     self.board[row][col].draw(win)
 
-	def draw_deck(self, win):
+    def draw_deck(self, win):
         pygame.draw.rect(win, BLACK, (0, 0, SQUARE_SIZE, SQUARE_SIZE*4))
         pygame.draw.rect(win, BLACK, (5*SQUARE_SIZE, 0, SQUARE_SIZE, SQUARE_SIZE*4))
         if self.left_player.stack1 !=None:
@@ -123,10 +122,11 @@ class Board:
             self.right_player.stack2.draw(win)
         if self.right_player.stack3 !=None:
             self.right_player.stack3.draw(win)
-    
-	def draw(self, win):
-        self.draw_squares(win)            
+
+    def draw(self, win):
+        self.draw_squares(win)
         self.draw_deck(win)
+
         
     def display_winner_panel(winner,win):
         # Display the winner panel
