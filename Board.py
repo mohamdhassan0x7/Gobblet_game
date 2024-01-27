@@ -546,7 +546,59 @@ class Board:
                     return False
         return True        
     
-
+    def valid_moves( self, Board , color , player1 , player2 , max = None):         
+                validMoves = []
+                for stackNum in range(3):
+                    for row in range(4):
+                        for col in range(4):
+                            temp_board = copy.deepcopy(Board) 
+                            tempFirstPlayerStack = [ temp_board.left_player.stack1, temp_board.left_player.stack2 , temp_board.left_player.stack3]
+                            tempSecondPlayerStack = [ temp_board.right_player.stack1 , temp_board.right_player.stack2 , temp_board.right_player.stack3]
+                            #color
+                            if color == first_player :
+                                if stackNum != 0:
+                                    if stackNum == 1: 
+                                        if tempFirstPlayerStack[stackNum -1] != None and tempFirstPlayerStack[stackNum] != None :
+                                            if tempFirstPlayerStack[stackNum].size == tempFirstPlayerStack[stackNum -1].size :
+                                                continue
+                                    if stackNum == 2: 
+                                        if tempFirstPlayerStack[stackNum -1] != None and tempFirstPlayerStack[stackNum] != None:
+                                            if tempFirstPlayerStack[stackNum].size == tempFirstPlayerStack[stackNum -1].size:
+                                                continue
+                                        if tempFirstPlayerStack[stackNum -2] != None and tempFirstPlayerStack[stackNum] != None:
+                                            if  tempFirstPlayerStack[stackNum].size == tempFirstPlayerStack[stackNum - 2].size:
+                                                continue
+                                if tempFirstPlayerStack[stackNum] != None:
+                                    result = temp_board.place_piece(tempFirstPlayerStack[stackNum] , (row , col) , 'hand') 
+                                else:
+                                    continue
+                            if color == second_player :
+                                if stackNum != 0:
+                                    if stackNum == 1: 
+                                        if tempSecondPlayerStack[stackNum -1] != None and tempSecondPlayerStack[stackNum] != None :
+                                            if tempSecondPlayerStack[stackNum].size == tempSecondPlayerStack[stackNum -1].size :
+                                                continue
+                                    if stackNum == 2: 
+                                        if tempSecondPlayerStack[stackNum -1] != None and tempSecondPlayerStack[stackNum] != None:
+                                            if tempSecondPlayerStack[stackNum].size == tempSecondPlayerStack[stackNum -1].size:
+                                                continue
+                                        if tempSecondPlayerStack[stackNum -2] != None and tempSecondPlayerStack[stackNum] != None:
+                                            if  tempSecondPlayerStack[stackNum].size == tempSecondPlayerStack[stackNum - 2].size:
+                                                continue
+                                if tempSecondPlayerStack[stackNum] != None:
+                                    result = temp_board.place_piece(tempSecondPlayerStack[stackNum] , (row , col) , 'hand') 
+                                else:
+                                    continue
+                            if result == "Placed" or result.endswith('wins'):
+                                value = stackNum + 1
+                                if color == first_player :
+                                    temp_board.left_player.update_stack('stack'+ str(value) )
+                                if color == second_player :
+                                    temp_board.right_player.update_stack('stack' + str(value) )
+                                temp_board.evaluate()
+                                validMoves.append(temp_board)
+                
+                return validMoves
 
 
 
