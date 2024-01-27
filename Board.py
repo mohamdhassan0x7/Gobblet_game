@@ -642,6 +642,28 @@ def check_draw(self , player1Array , player2Array):
                     thirdFlag = True
         if firstFlag and secondFlag and thirdFlag:
             FirstPlayerDraw = True
+        firstFlag_temp = False 
+        secondFlag_temp = False 
+        thirdFlag_temp = False 
+        secondPlayerDraw = False
+        for pieceNum in range(2):
+            if player2Array[pieceNum][0] == player2Array[pieceNum+2][0] and player2Array[pieceNum][0] == player2Array[pieceNum+4][0] :
+                if player2Array[pieceNum][1] == player2Array[pieceNum+2][1] and player2Array[pieceNum][1] == player2Array[pieceNum+4][1] :
+                    if pieceNum == 0:
+                        firstFlag_temp = True
+                    if pieceNum == 1:
+                        secondFlag_temp = True
+        if player2Array[0][0] == player2Array[1][1] and player2Array[0][1] == player2Array[1][0]:
+            if player2Array[2][0] == player2Array[3][1] and player2Array[2][1] == player2Array[3][0]:
+                if player2Array[4][0] == player2Array[5][1] and player2Array[4][1] == player2Array[5][0]:
+                    thirdFlag_temp = True
+        if firstFlag_temp and secondFlag_temp and thirdFlag_temp:
+            secondPlayerDraw = True
+        
+        if secondPlayerDraw and FirstPlayerDraw :
+            return True
+        else:
+            return False
 
 
 
