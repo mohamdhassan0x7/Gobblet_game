@@ -350,7 +350,7 @@ class Board:
                 return "Draw"
 
 
-        def place_piece(self, piece, position, playingPlace):
+    def place_piece(self, piece, position, playingPlace):
         row, col = position
         
         existing_piece = self.board[row][col]
