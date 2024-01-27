@@ -18,7 +18,7 @@ def create_game(option, sub_option = None):
     if option == "Human vs Human":
         game = Game(WIN,Player.Player(first_player),Player.Player(second_player))
     elif option == "Computer vs Computer":
-        game = Game(WIN,Player.Player(first_player, True , "Difficult"),Player.Player(second_player, True , "Difficult"))    
+       game = Game(WIN,Player.Player(first_player, True , "Medium"),Player.Player(second_player, True , "Medium"))      
     elif option == "Human vs Computer":
         if sub_option == "Easy":
             game = Game(WIN,Player.Player(first_player),Player.Player(second_player, True))    
