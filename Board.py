@@ -350,31 +350,39 @@ class Board:
                 return "Draw"
 
 
-    def place_piece(self, piece, position, playingPlace):
+        def place_piece(self, piece, position, playingPlace):
         row, col = position
-        existing_piece = self.grid[row][col]
+        
+        existing_piece = self.board[row][col]
 
         pieceCopy = copy.copy(piece) 
         pieceCopy.update_children(None)
 
         if existing_piece:
-            if existing_piece.size >= piece.size:
+            if (existing_piece.size >= piece.size) or (existing_piece.color == piece.color):
                 return "Error"
             if playingPlace != 'board':
-                valid = self.check_can_play(self.grid , pieceCopy.color , existing_piece)
-                print(valid)
+                valid = self.check_can_play(self.board , pieceCopy.color , existing_piece)
+                #print(valid)
                 if valid == 'valid move':
+                    self.FirstPlayerMoves = [None for _ in range(6)]
+                    self.SecondPlayerMoves = [None for _ in range(6)]
                     pieceCopy.update_children(existing_piece)
                 else:
                     return "Error"
             else:
                 pieceCopy.update_children(existing_piece)
-        self.grid[row][col] = pieceCopy
-        pieceCopy.update_index(position)
+        self.board[row][col] = pieceCopy
+        pieceCopy.update_index(position)            
         if(playingPlace != 'board'):
-            winner = self.check_winner(self.grid)
+            self.FirstPlayerMoves = [None for _ in range(6)]
+            self.SecondPlayerMoves = [None for _ in range(6)]
+            winner = self.check_winner(self.board)
             if winner != 'No Winner':
-                return winner + ' wins'
+                if winner == self.left_player.color:
+                    return "left player wins"
+                else:
+                    return "right player wins"
         return "Placed"
 
     def move_piece(self, start_position, end_position):
