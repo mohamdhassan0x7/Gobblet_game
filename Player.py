@@ -7,11 +7,16 @@ class Player:
         self.stack2 = self.initiate_stack()
         self.stack3 = self.initiate_stack()
         
-    def initiate_stack(self):
-        return Piece(size=4, color=self.color, children=
-            Piece(size=3, color=self.color, children=
-                Piece(size=2, color=self.color, children=
-                    Piece(size=1, color=self.color),
+    def initiate_stack(self,r):
+        col=None
+        if self.color == first_player:
+            col = 0
+        else:
+            col = 5
+        return      Piece(col = col,row=r,size=4, color=self.color, children=
+                    Piece(col = col,row=r,size=3, color=self.color, children=
+                    Piece(col = col,row=r,size=2, color=self.color, children=
+                    Piece(col = col,row=r,size=1, color=self.color, children=None),
                 ),
             ),
         )
