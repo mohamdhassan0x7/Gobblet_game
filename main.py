@@ -48,7 +48,6 @@ def run_game(option, sub_option = None):
                 #based on return value:
                 #new game  ==> create game with same option and sub options.
                 #main menu ==> return to main screen
-                
                 if res == "new game":
                     game = create_game(option, sub_option)
                 elif res == "main menu":
