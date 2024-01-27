@@ -77,11 +77,4 @@ class Piece:
     
 
 
-# Display information about the piece
-# new_index = (2, 2)
-# piece1.update_index(new_index)
-# piece1.update_children(piece2)
 
-# print("Piece Information:")
-# print(piece1)
-# print(piece2)
