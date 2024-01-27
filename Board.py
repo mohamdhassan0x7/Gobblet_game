@@ -202,34 +202,6 @@ class Board:
     
         self.SCORE = self.evaluate()
 
-    def print_board(self, win):
-        self.draw_squares(win)
-        for row in range(4):
-            for col in range(4):
-                if self.board[row][col] is not None:
-                    self.board[row][col].draw(win)
-
-    def draw_deck(self, win):
-        pygame.draw.rect(win, BLACK, (0, 0, SQUARE_SIZE, SQUARE_SIZE*4))
-        pygame.draw.rect(win, BLACK, (5*SQUARE_SIZE, 0, SQUARE_SIZE, SQUARE_SIZE*4))
-        if self.left_player.stack1 !=None:
-            self.left_player.stack1.draw(win)
-        if self.left_player.stack2 !=None:
-            self.left_player.stack2.draw(win)
-        if self.left_player.stack3 !=None:
-            self.left_player.stack3.draw(win)
-        
-        if self.right_player.stack1 !=None:
-            self.right_player.stack1.draw(win)
-        if self.right_player.stack2 !=None:
-            self.right_player.stack2.draw(win)
-        if self.right_player.stack3 !=None:
-            self.right_player.stack3.draw(win)
-
-    def draw(self, win):
-        self.draw_squares(win)
-        self.draw_deck(win)
-
     def display_winner_panel(winner,win):
         # Display the winner panel
         font = pygame.font.SysFont("Arial", 50)
