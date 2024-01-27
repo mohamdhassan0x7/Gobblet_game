@@ -619,7 +619,29 @@ class Board:
                 
                 return validMoves
 
-
+def check_draw(self , player1Array , player2Array):
+        if None in player1Array :
+            return False
+        if None in player2Array :
+            return False
+        
+        firstFlag = False 
+        secondFlag = False 
+        thirdFlag = False 
+        FirstPlayerDraw = False
+        for pieceNum in range(2):
+            if player1Array[pieceNum][0] == player1Array[pieceNum+2][0] and player1Array[pieceNum][0] == player1Array[pieceNum+4][0] :
+                if player1Array[pieceNum][1] == player1Array[pieceNum+2][1] and player1Array[pieceNum][1] == player1Array[pieceNum+4][1] :
+                    if pieceNum == 0:
+                        firstFlag = True
+                    if pieceNum == 1:
+                        secondFlag = True
+        if player1Array[0][0] == player1Array[1][1] and player1Array[0][1] == player1Array[1][0]:
+            if player1Array[2][0] == player1Array[3][1] and player1Array[2][1] == player1Array[3][0]:
+                if player1Array[4][0] == player1Array[5][1] and player1Array[4][1] == player1Array[5][0]:
+                    thirdFlag = True
+        if firstFlag and secondFlag and thirdFlag:
+            FirstPlayerDraw = True
 
 
 
