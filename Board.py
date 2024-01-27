@@ -42,7 +42,6 @@ class Board:
             return
         
         #HOLD PEICE FROM BOARD
-        #print(row , col-1)
         if self.board[row][col-1] != None and self.holding_piece.size ==0 and((self.board[row][col-1].color ==self.left_player.color and self.turn == "l")or(self.board[row][col-1].color ==self.right_player.color and self.turn == "r")) : 
             valid = False
             for r in range (4):
