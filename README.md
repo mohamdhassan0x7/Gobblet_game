@@ -1,10 +1,5 @@
 # Gobblet Gobblers
 
-## Demo
-[![Gobblet Gobblers Demo](https://img.youtube.com/vi/HYd2_F58rQo/0.jpg)](https://www.youtube.com/watch?v=HYd2_F58rQo)
-
----
-
 ## Description
 
 Gobblet Gobblers is a two-player abstract strategy game designed by Thierry Denoual. It is played on a 4x4 board and is similar to tic-tac-toe but with a twist. Players aim to line up three of their pieces of the same size horizontally, vertically, or diagonally, while also being able to gobble up smaller pieces and move their own pieces to different locations on the board.
@@ -67,6 +62,11 @@ In this mode, two AI opponents face off against each other. The level of AI is r
 ![image](https://github.com/mohamdhassan0x7/Gobblet_game/assets/105478629/bee41e2b-e300-430c-a6ae-6ee55c9120c9)
 ![image](https://github.com/mohamdhassan0x7/Gobblet_game/assets/105478629/4d5164f9-64ec-4312-9606-31e23a58b294)
 ![image](https://github.com/mohamdhassan0x7/Gobblet_game/assets/105478629/d38dfec2-1d57-479a-baf0-9cfe96a6641f)
+
+---
+
+## Demo
+[![Gobblet Gobblers Demo](https://img.youtube.com/vi/HYd2_F58rQo/0.jpg)](https://www.youtube.com/watch?v=HYd2_F58rQo)
 
 ---
 
