@@ -75,11 +75,7 @@ class Piece:
 
   
     
-# Create a piece
-# piece1 = Piece(size=3, color="white")
-# piece2 = Piece(size=2, color="black")
 
-# print(piece1)
 
 # Display information about the piece
 # new_index = (2, 2)
