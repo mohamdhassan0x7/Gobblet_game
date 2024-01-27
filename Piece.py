@@ -5,16 +5,16 @@ class Piece:
     PADDING = 15
     OUTLINE = 2
     id_counter = 0
-    def __init__(self,row,col, color, size, children=None):
-        self.index = index
-        self.size = size
+    def __init__(self, row, col, color,size,children=None):
+        self.id = Piece.id_counter
+        Piece.id_counter += 1
+        self.row = row
+        self.col = col
         self.color = color
         self.x = 0
         self.y = 0
         self.calc_pos()
         self.size = size
-        self.row = row
-        self.col = col
         self.children = children or None
 
     def update_index(self, new_index):
