@@ -546,6 +546,7 @@ class Board:
     
     def valid_moves( self, Board , color , player1 , player2 , max = None):         
                 validMoves = []
+        #checks the valid moves for the pieces in the player stack
                 for stackNum in range(3):
                     for row in range(4):
                         for col in range(4):
@@ -595,7 +596,8 @@ class Board:
                                     temp_board.right_player.update_stack('stack' + str(value) )
                                 temp_board.evaluate()
                                 validMoves.append(temp_board)
-                                for row in range(4):
+            #checks the valid moves for the pieces on the board
+            for row in range(4):
                 for col in range(4):
                     temp_board = copy.deepcopy(Board) 
                     if temp_board.board[row][col] != None:
