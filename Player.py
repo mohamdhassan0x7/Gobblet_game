@@ -1,11 +1,13 @@
 from Piece import Piece
 
 class Player:
-    def __init__(self, color):
+   def __init__(self, color, ai = False, level = "Easy"):
+        self.level = level
+        self.ai = ai
         self.color = color
-        self.stack1 = self.initiate_stack()
-        self.stack2 = self.initiate_stack()
-        self.stack3 = self.initiate_stack()
+        self.stack1 = self.initiate_stack(0)
+        self.stack2 = self.initiate_stack(1)
+        self.stack3 = self.initiate_stack(2)
         
     def initiate_stack(self,r):
         col=None
