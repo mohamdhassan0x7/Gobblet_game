@@ -13,7 +13,36 @@ class Board:
         self.holding_position = None
         self.piece_from_board = False
 
-   #show selected piece for player[left,right] from deck
+    def draw_squares(self, win):
+        win.fill(GREY)
+        # Human vs Human mode : Only mode that contains draw button
+        if self.left_player.ai == False and self.right_player.ai == False: 
+            font = pygame.font.Font("8-BIT_WONDER.TTF", 12)
+            drawBtn = pygame.Rect((WIDTH//2)-80, 5, 160, 30)
+            pygame.draw.rect(win, (153, 88, 42), drawBtn, border_radius=20)
+
+            if (DrawCase == DrawPressed):
+                pygame.draw.rect(win, (111, 29, 27), drawBtn, border_radius=20)
+                # the player who requests draw can not accept this draw
+                if(self.turn != self.playerReqDraw):
+                    drawBtn_text = font.render("ACCEPT DRAW", True, (247, 231, 206))
+                else:
+                    drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))    
+            else:
+                drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))        
+
+
+            drawBtn_text_rect = drawBtn_text.get_rect(center=drawBtn.center)
+            win.blit(drawBtn_text, drawBtn_text_rect)
+        # draw board tiles 
+        for row in range(ROWS):
+            for col in range(row % 2, 4, 2):
+                pygame.draw.rect(win, RED, ((row+1)*SQUARE_SIZE , col *SQUARE_SIZE + ZERO_Y, SQUARE_SIZE, SQUARE_SIZE))
+            for col in range((row+1) % 2, 4, 2):
+                pygame.draw.rect(win, WHITE, ((row+1)*SQUARE_SIZE , col *SQUARE_SIZE + ZERO_Y, SQUARE_SIZE, SQUARE_SIZE))
+   
+
+    #show selected piece for player[left,right] from deck
    def current_piece(self,row, col, win):
         if self.piece_from_board == True:
             return
@@ -128,40 +157,16 @@ class Board:
             self.turn = "r"
         else:
             self.turn = "l"
-
         # in case player 1 requested draw and player 2 didn't accept draw 
         if self.turn == self.playerReqDraw:
             self.playerReqDraw = None
             DrawCase = DrawReleased
             self.print_board(win)
             self.draw_deck(win)
-            
-    def draw_squares(self, win):
-        win.fill(GREY)
-        if self.left_player.ai == False and self.right_player.ai == False:
-            font = pygame.font.Font("8-BIT_WONDER.TTF", 12)
-            drawBtn = pygame.Rect((WIDTH//2)-80, 5, 160, 30)
-            pygame.draw.rect(win, (153, 88, 42), drawBtn, border_radius=20)
+    
+    ########################################################################################################################
 
-            if (DrawCase == DrawPressed):
-                pygame.draw.rect(win, (111, 29, 27), drawBtn, border_radius=20)
-                if(self.turn != self.playerReqDraw):
-                    drawBtn_text = font.render("ACCEPT DRAW", True, (247, 231, 206))
-                else:
-                    drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))    
-            else:
-                drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))        
-
-
-            drawBtn_text_rect = drawBtn_text.get_rect(center=drawBtn.center)
-            win.blit(drawBtn_text, drawBtn_text_rect)
-
-        for row in range(ROWS):
-            for col in range(row % 2, 4, 2):
-                pygame.draw.rect(win, RED, ((row+1)*SQUARE_SIZE , col *SQUARE_SIZE + ZERO_Y, SQUARE_SIZE, SQUARE_SIZE))
-            for col in range((row+1) % 2, 4, 2):
-                pygame.draw.rect(win, WHITE, ((row+1)*SQUARE_SIZE , col *SQUARE_SIZE + ZERO_Y, SQUARE_SIZE, SQUARE_SIZE))
-
+    ######################################################################################################################## 
     def print_board(self, win):
         self.draw_squares(win)
         for row in range(4):
@@ -190,7 +195,6 @@ class Board:
         self.draw_squares(win)
         self.draw_deck(win)
 
-        
     def display_winner_panel(winner,win):
         # Display the winner panel
         font = pygame.font.SysFont("Arial", 50)
@@ -204,7 +208,140 @@ class Board:
 
         # Wait for a moment to show the winner panel
         pygame.time.delay(3000)
-        
+    
+    ########################################################################################################################
+
+    ########################################################################################################################  
+    def cal_score(self,color):
+        winner = self.check_winner(self.board)
+        # whenever find winner move, return high score to make this move
+        if winner != 'No Winner':
+            if winner == color:
+                return 99999999
+            else:
+                return -99999999  
+        score=[1, 1.1, 1.15, 1.17]
+        score_row = 0
+        score_col = 0
+        score_diagonal_R = 0
+        score_diagonal_C = 0 
+
+        max_score = 0
+        counter_r = 0
+        counter_c = 0
+        counter_d_r = 0
+        counter_d_l = 0
+        #ROWS AND COLUMNS
+        for row in range(4):
+            for col in range(4):
+                if self.board[row][col] != None:
+                    # if the board has pieces of same color in a row
+                    if self.board[row][col].color == color:
+                        counter_r+=1
+                        # calculating score depends on both size of pieces in row and count of them as well
+                        score_row += (counter_r * score[self.board[row][col].size-1])
+                        #update max score in case of better move
+                        if score_row > max_score:
+                            max_score = score_row
+                    else:
+                        score_row = 0 
+                        counter_r = 0   
+                else:
+                    score_row = 0 
+                    counter_r = 0
+
+                if self.board[col][row] != None:
+                    # if the board has pieces of same color in a collumn
+                    if self.board[col][row].color == color:
+                        counter_c+=1
+                        # calculating score depends on both size of pieces in column and count of them as well
+                        score_col += (counter_c * score[self.board[col][row].size-1])
+                        #update max score in case of better move
+                        if score_col > max_score:
+                            max_score = score_col
+                    else:
+                        score_col = 0
+                        counter_c = 0     
+                else:
+                    score_col = 0  
+                    counter_c = 0            
+
+        #DIAGONAL TO RIGHT
+        for col in range(4):
+            start_c = col 
+            start_r = 0
+            for r,c in zip(range(start_r, 4), range(start_c, 4)):
+                #FIRST DIAGONAL (ROW 0)
+                if self.board[r][c] != None:
+                    # if the board has pieces of same color in the main Diagonal
+                    if self.board[r][c].color == color and c == r:
+                        counter_d_r+=1
+                        score_diagonal_R += (counter_d_r*score[self.board[r][c].size-1])
+                        if score_diagonal_R > max_score:
+                            max_score = score_diagonal_R
+                    else:
+                        score_diagonal_R = 0  
+                        counter_d_r = 0  
+                else:
+                    score_diagonal_R = 0 
+                    counter_d_r = 0
+
+            score_diagonal_C = 0
+            score_diagonal_R = 0 
+       
+       #DIAGONAL TO LEFT
+        for col in range(4):
+            start_c = col 
+            start_r = 3
+            for r,c in zip(range(start_r, 0, -1), range(start_c, 4)):
+                #FIRST DIAGONAL (ROW 4)
+                if self.board[r][c] != None:
+                    # if the board has pieces of same color in opposite daigonal
+                    if self.board[r][c].color == color and c == 3-r:
+                        counter_d_l+=1
+                        score_diagonal_R += (counter_d_l*score[self.board[r][c].size-1])
+                        if score_diagonal_R > max_score:
+                            max_score = score_diagonal_R
+                    else:
+                        score_diagonal_R = 0 
+                        counter_d_l = 0   
+                else:
+                    score_diagonal_R = 0 
+                    counter_d_l = 0
+
+            score_diagonal_C = 0
+            score_diagonal_R = 0 
+
+        return max_score
+
+    def evaluate(self):
+        #returns the subtraction of left player score and right plaayer score to choose move
+        left_score = self.cal_score(self.left_player.color)
+        right_score = self.cal_score(self.right_player.color)
+        self.SCORE = (left_score - right_score)
+        return self.SCORE
+    
+    def draw_Req(self, win):
+        global DrawCase
+        #show accept draw to the other player 
+        if self.turn != self.playerReqDraw:
+            #case first player request draw 
+            if DrawCase == DrawReleased:
+                DrawCase = DrawPressed
+                self.playerReqDraw = self.turn
+                self.print_board(win)
+                self.draw_deck(win)
+                if self.holding_position != None:
+                    self.holding_piece.draw(win)
+            # case of accepting draw by second player, show popup window
+            elif DrawCase == DrawPressed:
+                DrawCase = DrawReleased
+                self.print_board(win)
+                self.draw_deck(win)  
+                if self.holding_position != None:
+                    self.holding_piece.draw(win)  
+                return "Draw"
+
 
     def place_piece(self, piece, position, playingPlace):
         row, col = position
