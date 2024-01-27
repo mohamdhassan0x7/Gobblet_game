@@ -81,7 +81,6 @@ class Game:
                 #Exit sign clicked 
                 if event.type == pygame.QUIT:
                     sys.exit()
-                    # pygame.quit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         popup_open = False
@@ -127,32 +126,33 @@ class Game:
     #Run AI functions based on the level of each player (easy, med, difficult)       
     def ai_move (self):
         start_time = time.time()
-        # pygame.time.delay(500)
         depth = 1
 
         if self.board.turn == "r" :
             if self.board.right_player.level == "Easy":
+                #use minmax
                 minEval, best_move = minimax(self.board, depth, False)
-                # print("EASY")
             elif self.board.right_player.level == "Medium":  
                 #use alpha beta pruning  
                 minEval, best_move = alpha_beta_pruning(self.board, depth+1, False)
             elif self.board.right_player.level == "Difficult":  
-                #use alpha beta pruning  
+                #use iterative alpha beta pruning  
                 minEval, best_move = iterative_deepening_alpha_beta_pruning(self.board, depth+1, False)    
         
         else:
             if self.board.left_player.level == "Easy":
+                #use minmax 
                 maxEval, best_move = minimax(self.board, depth, True)
             elif self.board.right_player.level == "Medium":  
                 #use alpha beta pruning  
                 minEval, best_move = alpha_beta_pruning(self.board, depth+1, False)    
             elif self.board.left_player.level == "Difficult":  
-                #use alpha beta pruning  
+                #use iterative alpha beta pruning  
                 maxEval, best_move = iterative_deepening_alpha_beta_pruning(self.board, depth+1, True)
 
         print("time: ", time.time() - start_time)
 
+        #return the best move found
         self.board = best_move
         self.board.switch_turn(self.win) 
         self.board.print_board(self.win)
