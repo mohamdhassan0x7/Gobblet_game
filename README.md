@@ -49,4 +49,7 @@ In this mode, two AI opponents face off against each other. The level of AI is r
 ![image](https://github.com/mohamdhassan0x7/Gobblet_game/assets/105478629/4d5164f9-64ec-4312-9606-31e23a58b294)
 ![image](https://github.com/mohamdhassan0x7/Gobblet_game/assets/105478629/d38dfec2-1d57-479a-baf0-9cfe96a6641f)
 
+## Download .exe & Video Link:
+https://engasuedu-my.sharepoint.com/:f:/g/personal/1900819_eng_asu_edu_eg/EueEa5kPTQBNr32J2uXCzb8BuE718oP0-tNWAIe0gFsDzA?e=yiWU9b
+
 Feel free to explore the source code for more details on the game implementation and AI strategies. Happy gaming!
