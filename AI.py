@@ -31,9 +31,23 @@ def minimax(board, depth, max_player):
                 best_move = move
         return minEval, best_move
 
-####################################################################### Iterative #####################################################
-
-########################################################################################################################################
+def iterative_deepening_alpha_beta_pruning(board, depth,  max_player, time_limit=5):
+    start_time = time.time() 
+    best_move = None
+    depth = 1
+    try:
+        while True:
+            #while time < constriant, call alpha_beta algorithm with increasing depth
+            score, move = alpha_beta_pruning(board, depth, max_player, start_time , time_limit)
+            if score != None:
+                best_move = move
+                print("depth", depth, "time: ", time.time() - start_time)
+            if time.time() - start_time > time_limit: # condition to check exceeding time constraints
+                break
+            depth += 1
+    except TimeoutError:
+        pass  # Handle the timeout if needed
+    return score, best_move
 
 def alpha_beta_pruning(board, depth, max_player, start_time = None , time_limit= None , alpha = float('-inf'), beta = float('inf')):
     #stop search if time exceeds limit [iterative deepening]
