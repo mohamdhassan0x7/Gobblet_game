@@ -6,6 +6,8 @@ from Game import Game
 import Player
 import sys
 
+import random
+
 #get coordinates of the select
 def get_row_col_from_mouse(pos):
     x, y = pos
