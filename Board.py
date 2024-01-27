@@ -3,15 +3,20 @@ import copy
 
 class Board:
     
-    def __init__(self):
-        self.grid = [[None for _ in range(4)] for _ in range(4)]
-        self.left_player = player1
-        self.right_player = player2
+    def __init__(self,win,player1,player2):
+        #self.win = win
+        self.left_player   = player1
+        self.right_player  = player2
         self.holding_piece = Piece(0,0,None,0,None)
         self.board = [[None for _ in range(4)] for _ in range(4)]
         self.turn = "l"
         self.holding_position = None
         self.piece_from_board = False
+        self.SCORE = 0
+        self.FirstPlayerMoves = [None for _ in range(6)]
+        self.SecondPlayerMoves = [None for _ in range(6)]
+        self.FirstPlayerIndex = 0
+        self.SecondPlayerIndex = 0
 
     def draw_squares(self, win):
         win.fill(GREY)
