@@ -4,6 +4,7 @@ import pygame
 class Piece:
     PADDING = 15
     OUTLINE = 2
+    id_counter = 0
     def __init__(self,row,col, color, size, children=None):
         self.index = index
         self.size = size
