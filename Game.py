@@ -145,7 +145,7 @@ class Game:
                 maxEval, best_move = minimax(self.board, depth, True)
             elif self.board.left_player.level == "Medium":  
                 #use alpha beta pruning  
-                minEval, best_move = alpha_beta_pruning(self.board, depth+1, False)    
+                minEval, best_move = alpha_beta_pruning(self.board, depth+1, True)    
             elif self.board.left_player.level == "Difficult":  
                 #use iterative alpha beta pruning  
                 maxEval, best_move = iterative_deepening_alpha_beta_pruning(self.board, depth+1, True)
