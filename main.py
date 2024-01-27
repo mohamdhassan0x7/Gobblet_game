@@ -52,4 +52,62 @@ def run_game(option, sub_option = None):
                     return 
                 #update gui
                 game.update()    
-####################################################################
+
+FPS = 60
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption('Gobblet Gobblers')
+icon_image = pygame.image.load("brown.png")  # Replace "icon.png" with the path to your image file
+
+resized_icon = pygame.transform.scale(icon_image, (64,64))
+# Set the window icon
+pygame.display.set_icon(resized_icon)
+# Initialize Pygame
+pygame.init()
+
+# Set up fonts
+font = pygame.font.Font("8-BIT_WONDER.TTF", 18)
+font_title = pygame.font.Font("8-BIT_WONDER.TTF", 42)
+
+# Main menu options
+options = ["Human vs Human", "Human vs Computer", "Computer vs Computer"]
+
+# Sub-options for Human vs. Computer mode
+sub_options = ["Easy", "Medium" ,"Difficult"]
+
+# Current mode and sub-mode
+current_mode = None
+current_sub_mode = None
+
+##################################################################
+
+##################################################################
+# Game loop
+running = True
+in_game = False
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            x, y = pygame.mouse.get_pos()
+            # Check if an option is clicked
+            for i, option in enumerate(options):
+                button_rect = pygame.Rect(WIDTH // 4, 150 + (i * 80)+80, WIDTH // 2, 60)
+                if button_rect.collidepoint(x, y):
+                    current_mode = option
+                    if current_mode == "Human vs Human" or current_mode == "Computer vs Computer":
+                        run_game(current_mode)
+                        current_mode = None
+            if current_mode == "Human vs Computer":
+                    for i, sub_option in enumerate(sub_options):
+                        button_rect = pygame.Rect((WIDTH // 11) + i*(WIDTH // 3.5), 400 + 80, WIDTH // 4, 60)
+                        if button_rect.collidepoint(x, y):
+                            current_sub_mode = sub_option
+                            print(current_sub_mode)
+                            run_game(current_mode, current_sub_mode)
+                            current_mode = None
+
+    draw_menu()  
+    pygame.display.flip()
+pygame.quit()
+sys.exit()
