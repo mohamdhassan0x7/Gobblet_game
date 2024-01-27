@@ -152,7 +152,6 @@ class Board:
 
     def switch_turn(self, win):
         global DrawCase
-        # print(self.turn)
         if self.turn == "l":
             self.turn = "r"
         else:
@@ -167,6 +166,7 @@ class Board:
     ########################################################################################################################
 
     ######################################################################################################################## 
+
     def print_board(self, win):
         self.draw_squares(win)
         for row in range(4):
