@@ -157,7 +157,7 @@ class Board:
             self.draw_deck(win)
             return result  
 
-      def switch_turn(self, win):
+    def switch_turn(self, win):
         global DrawCase
         # print(self.turn)
         if self.turn == "l":
