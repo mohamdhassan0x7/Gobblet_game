@@ -13,7 +13,7 @@ class Board:
         self.holding_position = None
         self.piece_from_board = False
 
-    def current_piece(self,row, col, win):
+   def current_piece(self,row, col, win):
         if self.piece_from_board == True:
             return
         if((col ==0) and row<3 and self.turn == "l" ):
@@ -33,37 +33,51 @@ class Board:
         if self.holding_piece.size != 0:
             self.draw_deck(win)
             self.holding_position = row
-            self.holding_piece.draw(win)
-    
+            self.holding_piece.draw(win,True)
+
     def add_piece_on_board(self,row,col,win):    
-        if self.board[row][col-1] != None and self.holding_piece.size ==0 and((self.board[row][col-1].color ==self.left_player.color and self.turn == "l")or(self.board[row][col-1].color ==self.right_player.color and self.turn == "r")) : 
-            self.piece_from_board = True
-            self.holding_piece.copy_piece(self.board[row][col-1])
-            self.holding_piece.draw(win)
-            self.holding_piece = self.board[row][col-1]
-            # print(self.holding_piece.row,self.holding_piece.col)
-            # self.board[row][col-1] = None
+        #CASE CLICK OUTSIDE THE BOARD
+        if row >3 or col-1 >3:
             return
         
+        #HOLD PEICE FROM BOARD
+        #print(row , col-1)
+        if self.board[row][col-1] != None and self.holding_piece.size ==0 and((self.board[row][col-1].color ==self.left_player.color and self.turn == "l")or(self.board[row][col-1].color ==self.right_player.color and self.turn == "r")) : 
+            valid = False
+            for r in range (4):
+                for c in range (4):
+                    if self.board[r][c] == None or (self.board[r][c].color != self.board[row][col-1].color and self.board[r][c].size < self.board[row][col-1].size):
+                        valid = True
+                        break
+            #CASE HOLDING PIECE FROM BOARD AND HAVE NO VALID MOVES (PLAYER LOSE)
+            if valid == False:
+                self.switch_turn(win)
+                if self.turn == 'r':
+                    return "right player wins"
+                else:
+                    return "left player wins" 
+
+            self.piece_from_board = True
+            self.holding_piece.copy_piece(self.board[row][col-1])
+            self.holding_piece.draw(win, True)
+            self.holding_piece = self.board[row][col-1]
+            return
+        
+        #CASE PLAYING FROM BOARD
         if self.piece_from_board == True:
-            
             result =self.move_piece((self.holding_piece.row,self.holding_piece.col-1),(row,col-1))
-            print(self.board)
             if result == "Placed":
                 self.piece_from_board = False
-                # self.holding_piece.color = BLACK
-                # self.holding_piece.draw(win)
                 self.holding_piece = Piece(0,0,None,0,None)
                 self.holding_position = None
-                self.switch_turn()
+                self.switch_turn(win)
                 self.print_board(win)
                 self.draw_deck(win)
-                
+            
         #case playing from hand
         if self.piece_from_board== False:
             if self.holding_piece.size == 0:
                 return
-            # print(row,col-1)
             result = self.place_piece(self.holding_piece,(row,col-1),'hand')
             if result == "Placed":
                 if self.turn == "l":
@@ -73,23 +87,35 @@ class Board:
                 else:
                     print("Error")
                 self.holding_piece.color = BLACK
-                self.holding_piece.draw(win)
+                self.holding_piece.draw(win,True)
                 self.holding_piece = Piece(0,0,None,0,None)
                 self.holding_position = None
-                self.switch_turn()
+                self.switch_turn(win)
                 self.print_board(win)
                 self.draw_deck(win)
         
-        if result.endswith('wins'):
+        if result.endswith('wins') or result == 'Draw':
             self.print_board(win)
             self.draw_deck(win)
-            return result
-
-    def switch_turn(self):
+            return result  
+    
+    def switch_turn(self, win):
+        global DrawCase
+        # print(self.turn)
         if self.turn == "l":
             self.turn = "r"
         else:
             self.turn = "l"
+
+        # in case player 1 requested draw and player 2 didn't accept draw 
+        if self.turn == self.playerReqDraw:
+            self.playerReqDraw = None
+            DrawCase = DrawReleased
+            self.print_board(win)
+            self.draw_deck(win)    
+      ##################################################################################################        
+    
+    ##################################################################################################
             
     def draw_squares(self, win):
         win.fill(BLACK)
