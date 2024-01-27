@@ -1,5 +1,5 @@
 import pygame
-from constants import BLACK, ROWS, RED,WHITE, SQUARE_SIZE, COLS , GREY, second_player, first_player, second_player,WIDTH,HEIGHT, TURN, ZERO_Y, DrawCase , DrawReleased , DrawPressed, OPTION
+from constants import BLACK, ROWS, RED,WHITE, SQUARE_SIZE, COLS , GREY, second_player, first_player, second_player,WIDTH,HEIGHT, TURN, ZERO_Y, DrawCase , DrawReleased , DrawPressed
 from Piece import Piece 
 import copy
 import random
