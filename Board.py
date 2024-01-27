@@ -399,6 +399,7 @@ class Board:
                     return "left player wins" 
             return result    
         elif result == "Placed":
+            #check if there is a winner when a piece is placed 
             if pieceChildren:
                 self.board[start_row][start_col] = pieceChildren
             else:
