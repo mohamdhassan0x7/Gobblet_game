@@ -143,7 +143,7 @@ class Game:
             if self.board.left_player.level == "Easy":
                 #use minmax 
                 maxEval, best_move = minimax(self.board, depth, True)
-            elif self.board.right_player.level == "Medium":  
+            elif self.board.left_player.level == "Medium":  
                 #use alpha beta pruning  
                 minEval, best_move = alpha_beta_pruning(self.board, depth+1, False)    
             elif self.board.left_player.level == "Difficult":  
