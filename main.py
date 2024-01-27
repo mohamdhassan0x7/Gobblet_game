@@ -81,9 +81,43 @@ sub_options = ["Easy", "Medium" ,"Difficult"]
 current_mode = None
 current_sub_mode = None
 
-##################################################################
+def draw_rounded_rect(surface, color, rect, border_radius):
+    pygame.draw.rect(surface, color, rect, border_radius=border_radius)
+    width, height = rect.size
 
-##################################################################
+def draw_menu():
+    WIN.fill(GREY)
+
+    # Draw title
+    # title_text = font_title.render("Gobblet Gobblers", True, BLACK)
+
+
+    cover = pygame.image.load("gobblet_rules.png")
+    # scaled_image = pygame.transform.scale(cover, (100, 100))
+    WIN.blit(cover, ( 200, 0))
+
+
+
+    # title_rect = title_text.get_rect(center=(WIDTH // 2, 50))
+    # WIN.blit(title_text, title_rect)
+
+    # Draw buttons
+    for i, option in enumerate(options):
+        button_rect = pygame.Rect(WIDTH // 4, 150 + (i * 80)+80, WIDTH // 2, 60)
+        draw_rounded_rect(WIN, BLACK, button_rect, 15)
+        text = font.render(option, True, GREY)
+        text_rect = text.get_rect(center=button_rect.center)
+        WIN.blit(text, text_rect)
+
+    if current_mode == "Human vs Computer":
+        for i, sub_option in enumerate(sub_options):
+            # button_rect = pygame.Rect(WIDTH // 2.6, 400 + i * 80, WIDTH // 4, 60)
+            button_rect = pygame.Rect((WIDTH // 11) + i*(WIDTH // 3.5), 400 + 80, WIDTH // 4, 60)
+            draw_rounded_rect(WIN, WHITE, button_rect, 15)
+            text = font.render(sub_option, True, GREY)
+            text_rect = text.get_rect(center=button_rect.center)
+            WIN.blit(text, text_rect)
+            
 # Game loop
 running = True
 in_game = False
