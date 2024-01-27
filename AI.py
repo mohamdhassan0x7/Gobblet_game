@@ -24,6 +24,9 @@ def minimax(board, depth, max_player):
                 best_move = move
         return minEval, best_move
 
+####################################################################### Iterative #####################################################
+
+########################################################################################################################################
 def alpha_beta_pruning(board, depth, max_player, start_time = None , time_limit= None , alpha = float('-inf'), beta = float('inf')):
     if  (start_time != None and ((time.time() - start_time) > time_limit)):
         return None, None
