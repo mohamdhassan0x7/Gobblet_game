@@ -135,18 +135,12 @@ class Board:
             self.draw_deck(win)
             return result  
 
-    def switch_turn(self, win):
-        global DrawCase
+  def switch_turn(self, win):
+        # print(self.turn)
         if self.turn == "l":
             self.turn = "r"
         else:
-            self.turn = "l"
-        # in case player 1 requested draw and player 2 didn't accept draw 
-        if self.turn == self.playerReqDraw:
-            self.playerReqDraw = None
-            DrawCase = DrawReleased
-            self.print_board(win)
-            self.draw_deck(win)
+            self.turn = "l" 
             
     def draw_deck(self, win):
         pygame.draw.rect(win, BLACK, (15, 40, SQUARE_SIZE-30, SQUARE_SIZE*3), border_radius=10)
