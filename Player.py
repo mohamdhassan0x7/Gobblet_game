@@ -1,4 +1,5 @@
 from Piece import Piece
+from constants import first_player
 
 class Player:
    def __init__(self, color, ai = False, level = "Easy"):
