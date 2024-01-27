@@ -162,10 +162,45 @@ class Board:
             DrawCase = DrawReleased
             self.print_board(win)
             self.draw_deck(win)
+            
+    def draw_deck(self, win):
+        pygame.draw.rect(win, BLACK, (15, 40, SQUARE_SIZE-30, SQUARE_SIZE*3), border_radius=10)
+        pygame.draw.rect(win, BLACK, (5*SQUARE_SIZE + 15, 40, SQUARE_SIZE - 30, SQUARE_SIZE*3), border_radius=10)
     
-    ########################################################################################################################
+        # DRAW HOLD PLACE
+        if self.turn == "l":
+            pygame.draw.rect(win, TURN, (15, SQUARE_SIZE*3 + 70, SQUARE_SIZE-30, SQUARE_SIZE-30), border_radius=10)
+            pygame.draw.rect(win, BLACK, (5*SQUARE_SIZE + 15, SQUARE_SIZE*3 + 70, SQUARE_SIZE-30, SQUARE_SIZE-30), border_radius=10)
+        else:
+            pygame.draw.rect(win, BLACK, (15, SQUARE_SIZE*3 + 70, SQUARE_SIZE-30, SQUARE_SIZE-30), border_radius=10)
+            pygame.draw.rect(win, TURN, (5*SQUARE_SIZE + 15, SQUARE_SIZE*3 + 70, SQUARE_SIZE-30, SQUARE_SIZE-30), border_radius=10)
+    
+        if self.left_player.stack1 is not None:
+            self.left_player.stack1.draw(win)
+        if self.left_player.stack2 is not None:
+            self.left_player.stack2.draw(win)
+        if self.left_player.stack3 is not None:
+            self.left_player.stack3.draw(win)
 
-    ######################################################################################################################## 
+        if self.right_player.stack1 is not None:
+            self.right_player.stack1.draw(win)
+        if self.right_player.stack2 is not None:
+            self.right_player.stack2.draw(win)
+        if self.right_player.stack3 is not None:
+            self.right_player.stack3.draw(win)
+
+    def draw(self, win):
+        self.draw_squares(win)            
+        self.draw_deck(win)
+
+    def print_board(self, win):
+        self.draw_squares(win)
+            for row in range(4):
+                for col in range(4):
+                    if self.board[row][col] is not None:
+                        self.board[row][col].draw(win)
+    
+        self.SCORE = self.evaluate()
 
     def print_board(self, win):
         self.draw_squares(win)
