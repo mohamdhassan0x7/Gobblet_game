@@ -1,12 +1,19 @@
 from constants import WIDTH, HEIGHT, SQUARE_SIZE, RED, WHITE, GREY, BLACK ,first_player,second_player
 def minimax(board, depth, max_player):
+
+    #If winning move has found return it (the best move)
     if board.check_winner(board.board) != 'No Winner':
         return board.SCORE, board
+        
+    #Base case (searching for best move is done)    
     if depth == 0 :
         return board.SCORE, board
+        
+    #Check the player type    
     if max_player:
         maxEval = float('-inf')
         best_move = None
+        #Get all available moves from current state and choose best one with highest evaluation value
         for move in board.valid_moves(board , first_player , board.left_player , board.right_player):
             evaluation = minimax(move, depth-1, False)[0]
             maxEval = max(maxEval, evaluation)
