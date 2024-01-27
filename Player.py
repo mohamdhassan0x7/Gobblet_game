@@ -34,5 +34,6 @@ class Player:
             stack = getattr(self, stack_name)
             setattr(self, stack_name, stack.children)
         else:
-            print('hello')
+            print("Invalid stack name")
+            return
 
