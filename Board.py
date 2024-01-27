@@ -611,13 +611,13 @@ class Board:
                                     if result == "Placed" or result.endswith('wins') :
                                         temp_board1.evaluate()
                                         validMoves.append(temp_board1)
-            random.shuffle(validMoves)
-            if max != None and max == True:
-                validMoves = sorted(validMoves, key=lambda obj: obj.SCORE , reverse=True)
-            elif max != None and max == False:
-                validMoves = sorted(validMoves, key=lambda obj: obj.SCORE)
+                random.shuffle(validMoves)
+                if max != None and max == True:
+                   validMoves = sorted(validMoves, key=lambda obj: obj.SCORE , reverse=True)
+                elif max != None and max == False:
+                   validMoves = sorted(validMoves, key=lambda obj: obj.SCORE)
                 
-            return validMoves
+                return validMoves
 
 
 
