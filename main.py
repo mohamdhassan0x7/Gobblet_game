@@ -18,7 +18,11 @@ def create_game(option, sub_option = None):
     if option == "Human vs Human":
         game = Game(WIN,Player.Player(first_player),Player.Player(second_player))
     elif option == "Computer vs Computer":
-       game = Game(WIN,Player.Player(first_player, True , "Medium"),Player.Player(second_player, True , "Medium"))      
+        random_number = random.choice([1, 2])
+        if random_number == 1:
+            game = Game(WIN,Player.Player(first_player, True , "Medium"),Player.Player(second_player, True , "Easy"))  
+        else:
+            game = Game(WIN,Player.Player(first_player, True , "Easy"),Player.Player(second_player, True , "Medium"))      
     elif option == "Human vs Computer":
         if sub_option == "Easy":
             game = Game(WIN,Player.Player(first_player),Player.Player(second_player, True))    
