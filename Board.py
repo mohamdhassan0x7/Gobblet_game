@@ -17,6 +17,8 @@ class Board:
         self.SecondPlayerMoves = [None for _ in range(6)]
         self.FirstPlayerIndex = 0
         self.SecondPlayerIndex = 0
+        self.playerReqDraw = None
+
 
     def draw_squares(self, win):
         win.fill(GREY)
