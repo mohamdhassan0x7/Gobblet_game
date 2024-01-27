@@ -20,14 +20,31 @@ class Board:
         self.playerReqDraw = None
 
 
-    def draw_squares(self, win):
+   def draw_squares(self, win):
         win.fill(GREY)
+        if self.left_player.ai == False and self.right_player.ai == False:
+            font = pygame.font.Font("8-BIT_WONDER.TTF", 12)
+            drawBtn = pygame.Rect((WIDTH//2)-80, 5, 160, 30)
+            pygame.draw.rect(win, (153, 88, 42), drawBtn, border_radius=20)
+
+            if (DrawCase == DrawPressed):
+                pygame.draw.rect(win, (111, 29, 27), drawBtn, border_radius=20)
+                if(self.turn != self.playerReqDraw):
+                    drawBtn_text = font.render("ACCEPT DRAW", True, (247, 231, 206))
+                else:
+                    drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))    
+            else:
+                drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))        
+
+
+            drawBtn_text_rect = drawBtn_text.get_rect(center=drawBtn.center)
+            win.blit(drawBtn_text, drawBtn_text_rect)
+
         for row in range(ROWS):
             for col in range(row % 2, 4, 2):
-                pygame.draw.rect(win, RED, ((row+1)*SQUARE_SIZE , col *SQUARE_SIZE + 40, SQUARE_SIZE, SQUARE_SIZE))
+                pygame.draw.rect(win, RED, ((row+1)*SQUARE_SIZE , col *SQUARE_SIZE + ZERO_Y, SQUARE_SIZE, SQUARE_SIZE))
             for col in range((row+1) % 2, 4, 2):
-                pygame.draw.rect(win, WHITE, ((row+1)*SQUARE_SIZE , col *SQUARE_SIZE +40, SQUARE_SIZE, SQUARE_SIZE))
-   
+                pygame.draw.rect(win, WHITE, ((row+1)*SQUARE_SIZE , col *SQUARE_SIZE + ZERO_Y, SQUARE_SIZE, SQUARE_SIZE))
 
     #show selected piece for player[left,right] from deck
    def current_piece(self,row, col, win):
