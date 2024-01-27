@@ -17,6 +17,7 @@ class Board:
    def current_piece(self,row, col, win):
         if self.piece_from_board == True:
             return
+        #check for player has clicked on his stack and which stack is clicked on then hold piece from top of this stack
         if((col ==0) and row<3 and self.turn == "l" ):
             if row == 0 and self.left_player.stack1 != None:
                 self.holding_piece.copy_piece(self.left_player.stack1)
@@ -31,6 +32,8 @@ class Board:
                 self.holding_piece.copy_piece(self.right_player.stack2)
             elif row == 2 and self.right_player.stack3 != None:
                 self.holding_piece.copy_piece(self.right_player.stack3)
+                
+        #check if there is holding piece, then draw it
         if self.holding_piece.size != 0:
             self.draw_deck(win)
             self.holding_position = row
@@ -40,7 +43,8 @@ class Board:
         #CASE CLICK OUTSIDE THE BOARD
         if row >3 or col-1 >3:
             return
-        
+
+        #check if the player is holding his own piece from the board
         #HOLD PEICE FROM BOARD
         if self.board[row][col-1] != None and self.holding_piece.size ==0 and((self.board[row][col-1].color ==self.left_player.color and self.turn == "l")or(self.board[row][col-1].color ==self.right_player.color and self.turn == "r")) : 
             valid = False
@@ -49,6 +53,7 @@ class Board:
                     if self.board[r][c] == None or (self.board[r][c].color != self.board[row][col-1].color and self.board[r][c].size < self.board[row][col-1].size):
                         valid = True
                         break
+                        
             #CASE HOLDING PIECE FROM BOARD AND HAVE NO VALID MOVES (PLAYER LOSE)
             if valid == False:
                 self.switch_turn(win)
@@ -57,40 +62,56 @@ class Board:
                 else:
                     return "left player wins" 
 
+            #piece is selected from board, holding piece will contain this piece
             self.piece_from_board = True
             self.holding_piece.copy_piece(self.board[row][col-1])
+
+            #draw holding piece (copy piece)
             self.holding_piece.draw(win, True)
+
             self.holding_piece = self.board[row][col-1]
             return
         
         #CASE PLAYING FROM BOARD
         if self.piece_from_board == True:
+            
             result =self.move_piece((self.holding_piece.row,self.holding_piece.col-1),(row,col-1))
+            #if new destination is valid for the piece
             if result == "Placed":
+                #remove holding piece
                 self.piece_from_board = False
                 self.holding_piece = Piece(0,0,None,0,None)
                 self.holding_position = None
                 self.switch_turn(win)
+                #update gui
                 self.print_board(win)
                 self.draw_deck(win)
             
         #case playing from hand
         if self.piece_from_board== False:
+            
+            #if there is no holding piece, return
             if self.holding_piece.size == 0:
                 return
+                
             result = self.place_piece(self.holding_piece,(row,col-1),'hand')
+            
+            #if new destination is valid for the piece
             if result == "Placed":
+                #update stacks
                 if self.turn == "l":
                     self.left_player.update_stack("stack"+str(self.holding_position+1))
                 elif self.turn == "r":
                     self.right_player.update_stack("stack"+str(self.holding_position+1))
                 else:
                     print("Error")
+                #remove holding piece from gui
                 self.holding_piece.color = BLACK
                 self.holding_piece.draw(win,True)
                 self.holding_piece = Piece(0,0,None,0,None)
                 self.holding_position = None
                 self.switch_turn(win)
+                #update gui
                 self.print_board(win)
                 self.draw_deck(win)
 
