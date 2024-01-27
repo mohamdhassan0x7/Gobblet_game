@@ -597,8 +597,27 @@ class Board:
                                     temp_board.right_player.update_stack('stack' + str(value) )
                                 temp_board.evaluate()
                                 validMoves.append(temp_board)
+                                for row in range(4):
+                for col in range(4):
+                    temp_board = copy.deepcopy(Board) 
+                    if temp_board.board[row][col] != None:
+                        if temp_board.board[row][col].color == color:
+                            for boardRow in range(4):
+                                for boardCol in range(4):
+                                    temp_board1 = copy.deepcopy(temp_board) 
+                                    if row == boardRow and col == boardCol:
+                                        continue
+                                    result = temp_board1.move_piece((row , col) , (boardRow , boardCol) )
+                                    if result == "Placed" or result.endswith('wins') :
+                                        temp_board1.evaluate()
+                                        validMoves.append(temp_board1)
+            random.shuffle(validMoves)
+            if max != None and max == True:
+                validMoves = sorted(validMoves, key=lambda obj: obj.SCORE , reverse=True)
+            elif max != None and max == False:
+                validMoves = sorted(validMoves, key=lambda obj: obj.SCORE)
                 
-                return validMoves
+            return validMoves
 
 
 
