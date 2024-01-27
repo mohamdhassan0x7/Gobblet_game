@@ -13,6 +13,7 @@ class Board:
         self.holding_position = None
         self.piece_from_board = False
 
+   #show selected piece for player[left,right] from deck
    def current_piece(self,row, col, win):
         if self.piece_from_board == True:
             return
@@ -93,12 +94,13 @@ class Board:
                 self.switch_turn(win)
                 self.print_board(win)
                 self.draw_deck(win)
-        
+
+        #check if game ends then display result
         if result.endswith('wins') or result == 'Draw':
             self.print_board(win)
             self.draw_deck(win)
             return result  
-    
+
     def switch_turn(self, win):
         global DrawCase
         # print(self.turn)
