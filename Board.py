@@ -385,29 +385,47 @@ class Board:
                     return "right player wins"
         return "Placed"
 
-    def move_piece(self, start_position, end_position):
-
+   def move_piece(self, start_position, end_position):
         start_row, start_col = start_position
         end_row, end_col = end_position
-
-        piece_to_move = self.grid[start_row][start_col]
+        piece_to_move = self.board[start_row][start_col]
         pieceChildren = piece_to_move.children
         result = self.place_piece(piece_to_move , end_position ,'board')
         if result == "Error":
             #other options to play or no other options 
             playerLost = self.check_lose(piece_to_move)
-            if playerLost:
-                print('user Lost')
-                return
-            return result
+            if playerLost != False:
+                if playerLost == self.left_player.color:
+                    return "right player wins"
+                else:
+                    return "left player wins" 
+            return result    
         elif result == "Placed":
             if pieceChildren:
-                self.grid[start_row][start_col] = pieceChildren
+                self.board[start_row][start_col] = pieceChildren
             else:
-                self.grid[start_row][start_col] = None
-            winner = self.check_winner(self.grid)
+                self.board[start_row][start_col] = None
+            winner = self.check_winner(self.board)
+            
             if winner != 'No Winner':
-                return '{winner} wins'
+                if winner == self.left_player.color:
+                    return "left player wins"
+                else:
+                    return "right player wins"
+            if piece_to_move.color == first_player:
+                if self.FirstPlayerIndex == 6:
+                    self.FirstPlayerIndex = 0
+                self.FirstPlayerMoves[self.FirstPlayerIndex] = [start_position , end_position]
+                self.FirstPlayerIndex += 1
+            if piece_to_move.color == second_player:
+                if self.SecondPlayerIndex == 6:
+                    self.SecondPlayerIndex = 0
+                self.SecondPlayerMoves[self.SecondPlayerIndex] = [start_position , end_position]
+                self.SecondPlayerIndex += 1
+            drawResult = self.check_draw(self.FirstPlayerMoves , self.SecondPlayerMoves)
+            #print(drawResult)
+            if drawResult:
+                return 'Draw'
             return result
 
     def display_board(self):
