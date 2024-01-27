@@ -1,5 +1,8 @@
-from Piece import Piece
+import pygame
+from constants import BLACK, ROWS, RED,WHITE, SQUARE_SIZE, COLS , GREY, second_player, first_player, second_player,WIDTH,HEIGHT, TURN, ZERO_Y, DrawCase , DrawReleased , DrawPressed, OPTION
+from Piece import Piece 
 import copy
+import random
 
 class Board:
     
@@ -20,25 +23,25 @@ class Board:
         self.playerReqDraw = None
 
 
-   def draw_squares(self, win):
+    def draw_squares(self, win):
         win.fill(GREY)
         if self.left_player.ai == False and self.right_player.ai == False:
             font = pygame.font.Font("8-BIT_WONDER.TTF", 12)
             drawBtn = pygame.Rect((WIDTH//2)-80, 5, 160, 30)
             pygame.draw.rect(win, (153, 88, 42), drawBtn, border_radius=20)
-
-            if (DrawCase == DrawPressed):
-                pygame.draw.rect(win, (111, 29, 27), drawBtn, border_radius=20)
-                if(self.turn != self.playerReqDraw):
-                    drawBtn_text = font.render("ACCEPT DRAW", True, (247, 231, 206))
-                else:
-                    drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))    
+    
+        if (DrawCase == DrawPressed):
+            pygame.draw.rect(win, (111, 29, 27), drawBtn, border_radius=20)
+            if(self.turn != self.playerReqDraw):
+                drawBtn_text = font.render("ACCEPT DRAW", True, (247, 231, 206))
             else:
-                drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))        
-
-
-            drawBtn_text_rect = drawBtn_text.get_rect(center=drawBtn.center)
-            win.blit(drawBtn_text, drawBtn_text_rect)
+                drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))    
+        else:
+            drawBtn_text = font.render("REQUEST DRAW", True, (247, 231, 206))        
+    
+    
+        drawBtn_text_rect = drawBtn_text.get_rect(center=drawBtn.center)
+        win.blit(drawBtn_text, drawBtn_text_rect)
 
         for row in range(ROWS):
             for col in range(row % 2, 4, 2):
@@ -47,7 +50,7 @@ class Board:
                 pygame.draw.rect(win, WHITE, ((row+1)*SQUARE_SIZE , col *SQUARE_SIZE + ZERO_Y, SQUARE_SIZE, SQUARE_SIZE))
 
     #show selected piece for player[left,right] from deck
-   def current_piece(self,row, col, win):
+    def current_piece(self,row, col, win):
         if self.piece_from_board == True:
             return
         #check for player has clicked on his stack and which stack is clicked on then hold piece from top of this stack
@@ -76,7 +79,7 @@ class Board:
         #CASE CLICK OUTSIDE THE BOARD
         if row >3 or col-1 >3:
             return
-
+    
         #check if the player is holding his own piece from the board
         #HOLD PEICE FROM BOARD
         if self.board[row][col-1] != None and self.holding_piece.size ==0 and((self.board[row][col-1].color ==self.left_player.color and self.turn == "l")or(self.board[row][col-1].color ==self.right_player.color and self.turn == "r")) : 
@@ -94,14 +97,14 @@ class Board:
                     return "right player wins"
                 else:
                     return "left player wins" 
-
+    
             #piece is selected from board, holding piece will contain this piece
             self.piece_from_board = True
             self.holding_piece.copy_piece(self.board[row][col-1])
-
+    
             #draw holding piece (copy piece)
             self.holding_piece.draw(win, True)
-
+    
             self.holding_piece = self.board[row][col-1]
             return
         
@@ -147,7 +150,7 @@ class Board:
                 #update gui
                 self.print_board(win)
                 self.draw_deck(win)
-
+    
         #check if game ends then display result
         if result.endswith('wins') or result == 'Draw':
             self.print_board(win)
@@ -201,10 +204,10 @@ class Board:
 
     def print_board(self, win):
         self.draw_squares(win)
-            for row in range(4):
-                for col in range(4):
-                    if self.board[row][col] is not None:
-                        self.board[row][col].draw(win)
+        for row in range(4):
+            for col in range(4):
+                if self.board[row][col] is not None:
+                    self.board[row][col].draw(win)
     
         self.SCORE = self.evaluate()
 
@@ -391,7 +394,7 @@ class Board:
                     return "right player wins"
         return "Placed"
 
-   def move_piece(self, start_position, end_position):
+    def move_piece(self, start_position, end_position):
         start_row, start_col = start_position
         end_row, end_col = end_position
         piece_to_move = self.board[start_row][start_col]
@@ -554,81 +557,81 @@ class Board:
         return True        
     
     def valid_moves( self, Board , color , player1 , player2 , max = None):         
-                validMoves = []
-        #checks the valid moves for the pieces in the player stack
-                for stackNum in range(3):
-                    for row in range(4):
-                        for col in range(4):
-                            temp_board = copy.deepcopy(Board) 
-                            tempFirstPlayerStack = [ temp_board.left_player.stack1, temp_board.left_player.stack2 , temp_board.left_player.stack3]
-                            tempSecondPlayerStack = [ temp_board.right_player.stack1 , temp_board.right_player.stack2 , temp_board.right_player.stack3]
-                            #color
-                            if color == first_player :
-                                if stackNum != 0:
-                                    if stackNum == 1: 
-                                        if tempFirstPlayerStack[stackNum -1] != None and tempFirstPlayerStack[stackNum] != None :
-                                            if tempFirstPlayerStack[stackNum].size == tempFirstPlayerStack[stackNum -1].size :
-                                                continue
-                                    if stackNum == 2: 
-                                        if tempFirstPlayerStack[stackNum -1] != None and tempFirstPlayerStack[stackNum] != None:
-                                            if tempFirstPlayerStack[stackNum].size == tempFirstPlayerStack[stackNum -1].size:
-                                                continue
-                                        if tempFirstPlayerStack[stackNum -2] != None and tempFirstPlayerStack[stackNum] != None:
-                                            if  tempFirstPlayerStack[stackNum].size == tempFirstPlayerStack[stackNum - 2].size:
-                                                continue
-                                if tempFirstPlayerStack[stackNum] != None:
-                                    result = temp_board.place_piece(tempFirstPlayerStack[stackNum] , (row , col) , 'hand') 
-                                else:
-                                    continue
-                            if color == second_player :
-                                if stackNum != 0:
-                                    if stackNum == 1: 
-                                        if tempSecondPlayerStack[stackNum -1] != None and tempSecondPlayerStack[stackNum] != None :
-                                            if tempSecondPlayerStack[stackNum].size == tempSecondPlayerStack[stackNum -1].size :
-                                                continue
-                                    if stackNum == 2: 
-                                        if tempSecondPlayerStack[stackNum -1] != None and tempSecondPlayerStack[stackNum] != None:
-                                            if tempSecondPlayerStack[stackNum].size == tempSecondPlayerStack[stackNum -1].size:
-                                                continue
-                                        if tempSecondPlayerStack[stackNum -2] != None and tempSecondPlayerStack[stackNum] != None:
-                                            if  tempSecondPlayerStack[stackNum].size == tempSecondPlayerStack[stackNum - 2].size:
-                                                continue
-                                if tempSecondPlayerStack[stackNum] != None:
-                                    result = temp_board.place_piece(tempSecondPlayerStack[stackNum] , (row , col) , 'hand') 
-                                else:
-                                    continue
-                            if result == "Placed" or result.endswith('wins'):
-                                value = stackNum + 1
-                                if color == first_player :
-                                    temp_board.left_player.update_stack('stack'+ str(value) )
-                                if color == second_player :
-                                    temp_board.right_player.update_stack('stack' + str(value) )
-                                temp_board.evaluate()
-                                validMoves.append(temp_board)
-            #checks the valid moves for the pieces on the board
+        validMoves = []
+#checks the valid moves for the pieces in the player stack
+        for stackNum in range(3):
             for row in range(4):
                 for col in range(4):
                     temp_board = copy.deepcopy(Board) 
-                    if temp_board.board[row][col] != None:
-                        if temp_board.board[row][col].color == color:
-                            for boardRow in range(4):
-                                for boardCol in range(4):
-                                    temp_board1 = copy.deepcopy(temp_board) 
-                                    if row == boardRow and col == boardCol:
+                    tempFirstPlayerStack = [ temp_board.left_player.stack1, temp_board.left_player.stack2 , temp_board.left_player.stack3]
+                    tempSecondPlayerStack = [ temp_board.right_player.stack1 , temp_board.right_player.stack2 , temp_board.right_player.stack3]
+                    #color
+                    if color == first_player :
+                        if stackNum != 0:
+                            if stackNum == 1: 
+                                if tempFirstPlayerStack[stackNum -1] != None and tempFirstPlayerStack[stackNum] != None :
+                                    if tempFirstPlayerStack[stackNum].size == tempFirstPlayerStack[stackNum -1].size :
                                         continue
-                                    result = temp_board1.move_piece((row , col) , (boardRow , boardCol) )
-                                    if result == "Placed" or result.endswith('wins') :
-                                        temp_board1.evaluate()
-                                        validMoves.append(temp_board1)
-                random.shuffle(validMoves)
-                if max != None and max == True:
-                   validMoves = sorted(validMoves, key=lambda obj: obj.SCORE , reverse=True)
-                elif max != None and max == False:
-                   validMoves = sorted(validMoves, key=lambda obj: obj.SCORE)
-                
-                return validMoves
+                            if stackNum == 2: 
+                                if tempFirstPlayerStack[stackNum -1] != None and tempFirstPlayerStack[stackNum] != None:
+                                    if tempFirstPlayerStack[stackNum].size == tempFirstPlayerStack[stackNum -1].size:
+                                        continue
+                                if tempFirstPlayerStack[stackNum -2] != None and tempFirstPlayerStack[stackNum] != None:
+                                    if  tempFirstPlayerStack[stackNum].size == tempFirstPlayerStack[stackNum - 2].size:
+                                        continue
+                        if tempFirstPlayerStack[stackNum] != None:
+                            result = temp_board.place_piece(tempFirstPlayerStack[stackNum] , (row , col) , 'hand') 
+                        else:
+                            continue
+                    if color == second_player :
+                        if stackNum != 0:
+                            if stackNum == 1: 
+                                if tempSecondPlayerStack[stackNum -1] != None and tempSecondPlayerStack[stackNum] != None :
+                                    if tempSecondPlayerStack[stackNum].size == tempSecondPlayerStack[stackNum -1].size :
+                                        continue
+                            if stackNum == 2: 
+                                if tempSecondPlayerStack[stackNum -1] != None and tempSecondPlayerStack[stackNum] != None:
+                                    if tempSecondPlayerStack[stackNum].size == tempSecondPlayerStack[stackNum -1].size:
+                                        continue
+                                if tempSecondPlayerStack[stackNum -2] != None and tempSecondPlayerStack[stackNum] != None:
+                                    if  tempSecondPlayerStack[stackNum].size == tempSecondPlayerStack[stackNum - 2].size:
+                                        continue
+                        if tempSecondPlayerStack[stackNum] != None:
+                            result = temp_board.place_piece(tempSecondPlayerStack[stackNum] , (row , col) , 'hand') 
+                        else:
+                            continue
+                    if result == "Placed" or result.endswith('wins'):
+                        value = stackNum + 1
+                        if color == first_player :
+                            temp_board.left_player.update_stack('stack'+ str(value) )
+                        if color == second_player :
+                            temp_board.right_player.update_stack('stack' + str(value) )
+                        temp_board.evaluate()
+                        validMoves.append(temp_board)
+        #checks the valid moves for the pieces on the board
+        for row in range(4):
+            for col in range(4):
+                temp_board = copy.deepcopy(Board) 
+                if temp_board.board[row][col] != None:
+                    if temp_board.board[row][col].color == color:
+                        for boardRow in range(4):
+                            for boardCol in range(4):
+                                temp_board1 = copy.deepcopy(temp_board) 
+                                if row == boardRow and col == boardCol:
+                                    continue
+                                result = temp_board1.move_piece((row , col) , (boardRow , boardCol) )
+                                if result == "Placed" or result.endswith('wins') :
+                                    temp_board1.evaluate()
+                                    validMoves.append(temp_board1)
+            random.shuffle(validMoves)
+            if max != None and max == True:
+               validMoves = sorted(validMoves, key=lambda obj: obj.SCORE , reverse=True)
+            elif max != None and max == False:
+               validMoves = sorted(validMoves, key=lambda obj: obj.SCORE)
+            
+            return validMoves
 
-def check_draw(self , player1Array , player2Array):
+    def check_draw(self , player1Array , player2Array):
         if None in player1Array :
             return False
         if None in player2Array :
